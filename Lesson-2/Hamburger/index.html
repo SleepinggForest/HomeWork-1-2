@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--
+Некая сеть фастфудов предлагает несколько видов гамбургеров:
+
+маленький (50 рублей, 20 калорий)
+большой (100 рублей, 40 калорий)
+
+Гамбургер может быть с одним из нескольких видов начинок (обязательно):
+
+сыром (+ 10 рублей, + 20 калорий)
+салатом (+ 20 рублей, + 5 калорий)
+картофелем (+ 15 рублей, + 10 калорий)
+приправа (+ 15 рублей, 0 калорий)
+полить майонезом (+ 20 рублей, + 5 калорий). 
+
+Напиши программу, расчиытвающую стоимость и калорийность гамбургера.
+-->
+
+<form name="" action="" id="form">
+	<fieldset>
+		<legend>Create Hamburger</legend>
+		<div class="row">
+			<p>Choose Size</p>
+			<div class="radio-variant">
+				<input type="radio" name="size" id="small" value="small" checked/>
+				<label for="small">Small</label>
+			</div>
+			<div class="radio-variant">
+				<input type="radio" name="size" id="large" value="large" />
+				<label for="large">Large</label>
+			</div>
+		</div>
+		<div class="row additions">
+			<p>Additions</p>
+			<div class="checkbox-variant">
+				<input type="checkbox" name="add" id="cheese" value="cheese"/>
+				<label for="cheese">Cheese</label>
+			</div>
+			<div class="checkbox-variant">
+				<input type="checkbox" name="add" id="salad" value="salad"/>
+				<label for="salad">Salad</label>
+			</div>
+			<div class="checkbox-variant">
+				<input type="checkbox" name="add" id="potato" value="potato"/>
+				<label for="potato">Fried potato</label>
+			</div>
+			<div class="checkbox-variant">
+				<input type="checkbox" name="add" id="onion" value="onion"/>
+				<label for="onion">Сondiment</label>
+			</div>
+			<div class="checkbox-variant">
+				<input type="checkbox" name="add" id="ketchup" value="ketchup"/>
+				<label for="ketchup">Mayonnaise</label>
+			</div>
+		</div>
+		<div class="submit">
+			<input type="submit" value="Make Order" />
+		</div>
+	</fieldset>
+	<br />
+	<div id="result">
+		<div><b>Стоимость:</b> <span id="price">0</span> рублей</div>
+		<div><b>Калорийность:</b> <span id="calories">0</span> кКал</div>
+	</div>
+</form>
+<script>
+var Hamburger = {
+	
+	price: 0,
+	calories: 0,
+
+	small: {
+		price: 50,
+		calories: 20
+	},
+
+	large: {
+		price: 100,
+		calories: 40
+	},
+
+	cheese: {
+		price: 10,
+		calories: 20
+	},
+
+	salad: {
+		price: 20,
+		calories: 5
+	},
+
+	potato: {
+		price: 15,
+		calories: 10
+	},
+
+	onion: {
+		price: 15,
+		calories: 0
+	},
+
+	ketchup: {
+		price: 20,
+		calories: 5
+	},
+	
+	calc: function(size){
+		this.price += Hamburger[size].price;
+		this.calories += Hamburger[size].calories;
+		
+		var checkedBoxes = document.querySelectorAll('input[name=add]:checked');
+		for(var i = 0; i < checkedBoxes.length; i++){
+				var add = checkedBoxes[i].id;
+			  this.price += Hamburger[add].price;
+				this.calories += Hamburger[add].calories;
+		}
+		
+		Hamburger.result(this.price, this.calories);
+	},	
+	
+	result: function(price, calories){
+		document.getElementById('price').innerHTML = price;
+		document.getElementById('calories').innerHTML = calories;
+	},
+	
+	resetData: function(){
+		this.price = 0;
+		this.calories = 0;
+		Hamburger.result(this.price, this.calories);
+	}	
+}
+
+document.getElementById('form').addEventListener('submit', function(e){
+	Hamburger.resetData();
+	Hamburger.calc(document.querySelector('input[name="size"]:checked').value);
+	e.preventDefault();
+});
+</script>
+</body>
+</html>
